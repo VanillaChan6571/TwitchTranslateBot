@@ -34,12 +34,12 @@ Translator Twitch Bot by VanillaChanny or VanillaChan6571, is a versatile, easy-
 2. Populate the `config.properties` file with the required information:
 
 ```
-twitch_username=your_twitch_username
-twitch_oauth_key=your_twitch_oauth_key
-deepl_api_key=your_deepl_api_key
-channel=your_channel_name
-target_language=EN
-target_language_secondary=ES
+twitch_username=your_bot_twitch_username
+twitch_oauth_key=oauth\:000000000000000000000000000000
+deepl_api_key=00000000-0000-0000-0000-000000000000\:fx 
+target_language=en-US
+target_language_secondary=es
+channel=your_target_channel_name
 ```
 
 ## Usage

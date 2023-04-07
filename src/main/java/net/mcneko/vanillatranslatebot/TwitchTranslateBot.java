@@ -6,7 +6,10 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 public class TwitchTranslateBot extends ListenerAdapter {
     private final DeepLTranslator deepLTranslator;
@@ -14,6 +17,7 @@ public class TwitchTranslateBot extends ListenerAdapter {
     private final String targetLanguage;
     private final String targetLanguageSecondary;
     private final UserPreferences userPreferences;
+    private final Set<String> validLanguageCodes;
 
     public TwitchTranslateBot(String twitchUsername, String twitchOauthKey, String deeplApiKey, String channel, String targetLanguage, String targetLanguageSecondary) {
         this.deepLTranslator = new DeepLTranslator(deeplApiKey);
@@ -34,6 +38,7 @@ public class TwitchTranslateBot extends ListenerAdapter {
 
         bot = new PircBotX(configuration);
         userPreferences = new UserPreferences();
+        validLanguageCodes = new HashSet<>(Arrays.asList("EN", "ES")); // Add the valid language codes here
     }
 
     @Override
@@ -41,32 +46,38 @@ public class TwitchTranslateBot extends ListenerAdapter {
         String message = event.getMessage();
         String user = event.getUser().getNick();
 
-        if (message.startsWith("!")) {
-            if (message.startsWith("!translate ")) {
-                String[] parts = message.split(" ");
-                if (parts.length >= 2) {
-                    userPreferences.setUserLanguage(user, parts[1]);
-                    event.getChannel().send().message(user + "(English) You are now translating your messages to:" + parts[1] + "(Español) Ahora está traduciendo sus mensajes a:" + parts[1]);
+        if (message.startsWith("!translate")) {
+            String[] parts = message.split(" ");
+            if (parts.length < 2) {
+                event.getChannel().send().message(user + " (English) Usage: !translate <key> the current keys available are: " + String.join(", ", validLanguageCodes) + " (Español) ¡Error! Uso correcto: !translate <key> las teclas actuales disponibles son:" + String.join(", ", validLanguageCodes));
+            } else {
+                String languageCode = parts[1].toUpperCase();
+                if (validLanguageCodes.contains(languageCode)) {
+                    userPreferences.setUserLanguage(user, languageCode);
+                    event.getChannel().send().message(user + "(English) You are now translating your messages to:" + languageCode + "(Español) Ahora está traduciendo sus mensajes a: :" + languageCode);
                     wait(2000);
-                    event.getChannel().send().message("Saving your preference so you don't need to run the command again... Nya~ | Guarda tus preferencias para no tener que volver a ejecutar el comando... Nya~");
+                    event.getChannel().send().message("Saving your preference so you don't need to run the command again... | Guarda tus preferencias para no tener que volver a ejecutar el comando... ");
                 } else {
-                    event.getChannel().send().message(user + "(English): Nya! Invalid Usage!! UwU Correct Usage: !translate <key> the current keys available are (EN, ES) | (Español): Nya! ¡¡Uso no válido!! UwU Uso correcto: !translate <clave> las claves actuales disponibles son (EN, ES)");
+                    event.getChannel().send().message(user + " (English) Error! Correct Usage: !translate <key> the current keys available are: " + String.join(", ", validLanguageCodes) + " (Español) ¡Error! Uso correcto: !translate <key> las teclas actuales disponibles son: " + String.join(", ", validLanguageCodes));
                 }
             }
-            return; // Ignore any message starting with "!"
+            return;
         }
 
-        try {
-            String targetLanguage = userPreferences.getUserLanguage(user);
-            if (targetLanguage != null) {
-                String translatedMessage = deepLTranslator.translateText(message, targetLanguage);
-                event.getChannel().send().message(user + ": " + translatedMessage);
+        if (!message.startsWith("!")) {
+            try {
+                String targetLanguage = userPreferences.getUserLanguage(user);
+                if (targetLanguage != null) {
+                    String translatedMessage = deepLTranslator.translateText(message, targetLanguage);
+                    event.getChannel().send().message(user + ": " + translatedMessage);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                event.getChannel().send().message("Couwd nyot t-twanswate the message! C-Check Consowe fow ewwows! | ¡Nyo s-se pudo twaduciw ew mensaje! ¡Compwuebe wa consowa pawa vew si hay ewwowes!");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().send().message("Couwd nyot t-twanswate the message! C-Check Consowe fow ewwows! | ¡Nyo s-se pudo twaduciw ew mensaje! ¡Compwuebe wa consowa pawa vew si hay ewwowes!");
         }
     }
+
 
     public void startBot() throws Exception {
         bot.startBot();

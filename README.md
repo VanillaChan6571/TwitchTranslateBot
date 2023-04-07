@@ -45,11 +45,11 @@ target_language_secondary=ES
 ## Usage
 1. Run the bot using the following command:
 
-java -jar TranslatorTwitchBot-1.1.jar
+- `java -jar TranslatorTwitchBot-1.1.jar`
 
 2. In the Twitch chat, users can set their preferred language using the `!translate` command followed by the language code:
 
-`!translate ES`
+- `!translate ES`
 
 Supported language codes: `EN`, `ES`
 

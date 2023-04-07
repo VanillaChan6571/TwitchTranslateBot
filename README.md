@@ -58,6 +58,9 @@ Supported language codes: `EN`, `ES`
 ## Contributing
 We welcome contributions to this project! Please feel free to create issues for bug reports or feature requests, and submit pull requests for any improvements or bug fixes.
 
+Because im stupid and dumb and the goal was automatically translate languages vice versa... but I never got it to work... so I resulted into this method...
+So please help ;w;
+
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 

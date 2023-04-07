@@ -27,10 +27,10 @@ Translator Twitch Bot by VanillaChanny or VanillaChan6571, is a versatile, easy-
 ## Installation
 1. Clone the repository or download the source code.
 2. Build the project using Maven
-3. Locate the generated `TranslatorTwitchBot-1.1.jar` file in the `target` directory.
+3. Locate the generated `TranslatorTwitchBot.jar` file in the `target` directory.
 
 ## Configuration
-1. Create a `config.properties` file in the same directory as the `TranslatorTwitchBot-1.0.jar` file.
+1. Create a `config.properties` file in the same directory as the `TranslatorTwitchBot.jar` file.
 2. Populate the `config.properties` file with the required information:
 
 ```
@@ -45,7 +45,7 @@ channel=your_target_channel_name
 ## Usage
 1. Run the bot using the following command:
 
-- `java -jar TranslatorTwitchBot-1.1.jar`
+- `java -jar TranslatorTwitchBot.jar`
 
 2. In the Twitch chat, users can set their preferred language using the `!translate` command followed by the language code:
 

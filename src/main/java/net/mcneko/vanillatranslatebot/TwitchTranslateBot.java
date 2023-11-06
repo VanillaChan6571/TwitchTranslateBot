@@ -3,13 +3,11 @@ package net.mcneko.vanillatranslatebot;
 import com.deepl.api.LanguageCode;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.pircbotx.delay.StaticDelay;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 public class TwitchTranslateBot extends ListenerAdapter {
     private final DeepLTranslator deepLTranslator;
@@ -32,7 +30,7 @@ public class TwitchTranslateBot extends ListenerAdapter {
                 .addListener(this)
                 .setAutoReconnect(true)
                 .setAutoReconnectAttempts(15)
-                .setAutoReconnectDelay(1000)
+                .setAutoReconnectDelay(new StaticDelay(5000))
                 .setCapEnabled(true)
                 .buildConfiguration();
 
@@ -44,7 +42,7 @@ public class TwitchTranslateBot extends ListenerAdapter {
     @Override
     public void onMessage(MessageEvent event) throws InterruptedException {
         String message = event.getMessage();
-        String user = event.getUser().getNick();
+        String user = Objects.requireNonNull(event.getUser()).getNick();
 
         if (message.startsWith("!translate")) {
             String[] parts = message.split(" ");

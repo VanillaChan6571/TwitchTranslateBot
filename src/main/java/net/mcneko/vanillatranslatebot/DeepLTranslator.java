@@ -1,7 +1,7 @@
 package net.mcneko.vanillatranslatebot;
 
-import com.deepl.api.Translator;
 import com.deepl.api.TextResult;
+import com.deepl.api.Translator;
 
 public class DeepLTranslator {
     private final Translator translator;
